@@ -13,9 +13,13 @@ form {
   margin-bottom: 20px;
 }
 
+.form-group {
+  margin-bottom: 15px;
+}
+
 label {
   display: block;
-  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 input,
@@ -35,15 +39,4 @@ input[type="submit"] {
   background-color: #f4f4f4;
   padding: 20px;
   border-radius: 5px;
-}
-
-.purple-border {
-  border-color: #6f42c1;
-}
-
-.result {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 5px;
-  border: 1px solid #dee2e6;
 }

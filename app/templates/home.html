@@ -3,69 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Churn Prediction</title>
+    <title>Customer Churn Prediction</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
   </head>
   <body>
-    <div class="container">
-      <h1 class="mt-4 mb-4">Customer Churn Prediction</h1>
-      <form action="http://localhost:5000/" method="POST">
-        <div class="row">
-          <div class="col-sm-9">
-            {% for i in range(1, 20) %}
-            <div class="form-group purple-border">
-              <label for="query{{ i }}">{{ labels[i-1] }}:</label>
-              <textarea
-                class="form-control"
-                rows="2"
-                id="query{{ i }}"
-                name="query{{ i }}"
-                autofocus
-              >
-{{ queries[i-1] }}</textarea
-              >
-            </div>
-            {% endfor %}
-
-            <div class="form-group purple-border">
-              <label for="model_choice">Choose Model:</label>
-              <select
-                class="form-control"
-                id="model_choice"
-                name="model_choice"
-              >
-                <option value="combined">Combined Model</option>
-                <option value="best">Best Model</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <button type="submit" class="btn btn-primary" name="submit">
-              SUBMIT
-            </button>
-          </div>
-        </div>
-      </form>
-
-      {% if output1 %}
-      <div class="result mt-4">
-        <h2>Prediction Result:</h2>
-        <p>{{ output1 }}</p>
-        <p>{{ output2 }}</p>
+    <h1>Customer Churn Prediction</h1>
+    <form method="POST">
+      {% for label in labels %}
+      <div class="form-group">
+        <label for="query{{ loop.index }}">{{ label }}:</label>
+        <input
+          type="text"
+          id="query{{ loop.index }}"
+          name="query{{ loop.index }}"
+          value="{{ queries[loop.index0] }}"
+        />
       </div>
-      {% endif %}
-    </div>
+      {% endfor %}
+      <div class="form-group">
+        <label for="model_choice">Choose Model:</label>
+        <select name="model_choice" id="model_choice">
+          <option value="combined">Combined Model</option>
+          <option value="best">Best Model</option>
+        </select>
+      </div>
+      <input type="submit" value="Predict" />
+    </form>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% if output1 %}
+    <div class="result">
+      <h2>Prediction Result:</h2>
+      <p>{{ output1 }}</p>
+      <p>{{ output2 }}</p>
+    </div>
+    {% endif %}
+
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
 </html>

@@ -21,9 +21,9 @@ instance/
 # VS Code
 .vscode/
 
-# Models and data (uncomment if you don't want to track these)
-# *.pkl
-# *.csv
+# Models and data
+#*.pkl
+#*.csv
 
 # Logs
 *.log
