@@ -5,7 +5,7 @@ import pickle
 from config import Config
 
 # Load the dataset
-df_1 = pd.read_csv("first_telc.csv")
+df_1 = pd.read_csv("customer_data.csv")
 
 # Define labels for input fields
 input_labels = [

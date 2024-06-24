@@ -8,7 +8,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
     COMBINED_MODEL_PATH = os.environ.get('COMBINED_MODEL_PATH') or os.path.join(basedir, 'app', 'models', 'combined_model.pkl')
     BEST_MODEL_PATH = os.environ.get('BEST_MODEL_PATH') or os.path.join(basedir, 'app', 'models', 'best_model.pkl')
-    DATASET_PATH = os.environ.get('DATASET_PATH') or os.path.join(basedir, 'first_telc.csv')
+    DATASET_PATH = os.environ.get('DATASET_PATH') or os.path.join(basedir, 'customer_data.csv')
     
     @staticmethod
     def init_app(app):
