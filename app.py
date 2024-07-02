@@ -1,80 +1,104 @@
-# Import necessary libraries
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier 
+from sklearn import metrics
 from flask import Flask, request, render_template
 import pickle
 import os
 
-# Initialize the Flask application
-app = Flask(__name__)
+app = Flask("__name__")
 
-# Load the initial dataset
 df_1 = pd.read_csv("customer_data.csv")
 
-# Define the home route
 @app.route("/")
 def loadPage():
     return render_template('home.html', query="")
 
-# Define the route to handle form submission and prediction
 @app.route("/", methods=['POST'])
 def predict():
-    # Define the input fields expected from the form
-    input_fields = [
-        'SeniorCitizen', 'MonthlyCharges', 'TotalCharges', 'gender',
-        'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService',
-        'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport',
-        'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling',
-        'PaymentMethod', 'tenure'
-    ]
+    inputQuery1 = request.form['query1']
+    inputQuery2 = request.form['query2']
+    inputQuery3 = request.form['query3']
+    inputQuery4 = request.form['query4']
+    inputQuery5 = request.form['query5']
+    inputQuery6 = request.form['query6']
+    inputQuery7 = request.form['query7']
+    inputQuery8 = request.form['query8']
+    inputQuery9 = request.form['query9']
+    inputQuery10 = request.form['query10']
+    inputQuery11 = request.form['query11']
+    inputQuery12 = request.form['query12']
+    inputQuery13 = request.form['query13']
+    inputQuery14 = request.form['query14']
+    inputQuery15 = request.form['query15']
+    inputQuery16 = request.form['query16']
+    inputQuery17 = request.form['query17']
+    inputQuery18 = request.form['query18']
+    inputQuery19 = request.form['query19']
+
+    model_choice = request.form['model_choice']
     
-    # Extract input data from the form
-    input_data = {field: request.form[f'query{i+1}'] for i, field in enumerate(input_fields)}
+    if model_choice == 'best_model':
+        model_path = os.path.join('models', 'best_model.pkl')
+    else:
+        model_path = os.path.join('models', 'combined_model.pkl')
     
-    # Load the selected model
-    selected_model = request.form['model_choice']
-    model_path = os.path.join('models', f"{selected_model}.pkl")
+    model = pickle.load(open(model_path, "rb"))
     
-    with open(model_path, "rb") as f:
-        model = pickle.load(f)
+    data = [[inputQuery1, inputQuery2, inputQuery3, inputQuery4, inputQuery5, inputQuery6, inputQuery7, 
+             inputQuery8, inputQuery9, inputQuery10, inputQuery11, inputQuery12, inputQuery13, inputQuery14,
+             inputQuery15, inputQuery16, inputQuery17, inputQuery18, inputQuery19]]
     
-    # Create a new DataFrame with the input data
-    new_df = pd.DataFrame([input_data])
+    new_df = pd.DataFrame(data, columns = ['SeniorCitizen', 'MonthlyCharges', 'TotalCharges', 'gender', 
+                                           'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService',
+                                           'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport',
+                                           'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling',
+                                           'PaymentMethod', 'tenure'])
     
-    # Concatenate the new data with the existing dataset
-    df_2 = pd.concat([df_1, new_df], ignore_index=True) 
-    
+    df_2 = pd.concat([df_1, new_df], ignore_index = True) 
     # Group the tenure in bins of 12 months
     labels = ["{0} - {1}".format(i, i + 11) for i in range(1, 72, 12)]
+    
     df_2['tenure_group'] = pd.cut(df_2.tenure.astype(int), range(1, 80, 12), right=False, labels=labels)
-    df_2.drop(columns=['tenure'], axis=1, inplace=True)   
+    #drop column customerID and tenure
+    df_2.drop(columns= ['tenure'], axis=1, inplace=True)   
     
-    # Define the categorical columns for one-hot encoding
-    categorical_columns = ['gender', 'SeniorCitizen', 'Partner', 'Dependents', 'PhoneService',
-                           'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup',
-                           'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies',
-                           'Contract', 'PaperlessBilling', 'PaymentMethod', 'tenure_group']
+    new_df__dummies = pd.get_dummies(df_2[['gender', 'SeniorCitizen', 'Partner', 'Dependents', 'PhoneService',
+           'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup',
+           'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies',
+           'Contract', 'PaperlessBilling', 'PaymentMethod','tenure_group']])
     
-    # Perform one-hot encoding
-    new_df_dummies = pd.get_dummies(df_2[categorical_columns])
+    single = model.predict(new_df__dummies.tail(1))
+    probability = model.predict_proba(new_df__dummies.tail(1))[:,1]
     
-    # Make a prediction
-    single = model.predict(new_df_dummies.tail(1))
-    probability = model.predict_proba(new_df_dummies.tail(1))[:,1]
-    
-    # Determine the output message based on the prediction
     if single[0] == 1:
-        o1 = "This customer is likely to churn!"
+        o1 = "This customer is likely to be churned!!"
         o2 = f"Confidence: {probability[0]*100:.2f}%"
     else:
-        o1 = "This customer is likely to continue!"
+        o1 = "This customer is likely to continue!!"
         o2 = f"Confidence: {(1-probability[0])*100:.2f}%"
         
-    # Render the output on the HTML template
     return render_template('home.html', output1=o1, output2=o2, 
-                           **{f'query{i+1}': input_data[field] for i, field in enumerate(input_fields)},
-                           model_choice=selected_model)
+                           query1 = request.form['query1'], 
+                           query2 = request.form['query2'],
+                           query3 = request.form['query3'],
+                           query4 = request.form['query4'],
+                           query5 = request.form['query5'], 
+                           query6 = request.form['query6'], 
+                           query7 = request.form['query7'], 
+                           query8 = request.form['query8'], 
+                           query9 = request.form['query9'], 
+                           query10 = request.form['query10'], 
+                           query11 = request.form['query11'], 
+                           query12 = request.form['query12'], 
+                           query13 = request.form['query13'], 
+                           query14 = request.form['query14'], 
+                           query15 = request.form['query15'], 
+                           query16 = request.form['query16'], 
+                           query17 = request.form['query17'],
+                           query18 = request.form['query18'], 
+                           query19 = request.form['query19'],
+                           model_choice = model_choice)
 
-# Run the Flask application
 if __name__ == "__main__":
     app.run(debug=True)
