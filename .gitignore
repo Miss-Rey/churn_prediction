@@ -22,8 +22,8 @@ instance/
 .vscode/
 
 # Models and data
-#*.pkl
-#*.csv
+*.pkl
+*.csv
 
 # Logs
 *.log

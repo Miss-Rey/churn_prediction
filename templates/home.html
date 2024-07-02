@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 30px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            margin-top: 20px;
+        }
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Customer Churn Prediction</h1>
+        <form action="/" method="POST">
+            <div class="row">
+                <div class="col-md-6">
+                    {% for i in range(1, 10) %}
+                    <div class="form-group">
+                        <label for="query{{i}}">{{['SeniorCitizen', 'MonthlyCharges', 'TotalCharges', 'gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService'][i-1]}}:</label>
+                        <input type="text" class="form-control" id="query{{i}}" name="query{{i}}" value="{{vars()['query'+str(i)]}}">
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6">
+                    {% for i in range(10, 20) %}
+                    <div class="form-group">
+                        <label for="query{{i}}">{{['OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod', 'tenure'][i-10]}}:</label>
+                        <input type="text" class="form-control" id="query{{i}}" name="query{{i}}" value="{{vars()['query'+str(i)]}}">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="model_choice">Select Model:</label>
+                <select class="form-control" id="model_choice" name="model_choice">
+                    <option value="best_model" {% if model_choice == 'best_model' %}selected{% endif %}>Best Model</option>
+                    <option value="combined_model" {% if model_choice == 'combined_model' %}selected{% endif %}>Combined Model</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Predict</button>
+        </form>
+        
+        {% if output1 %}
+        <div id="result">
+            <h3>Prediction Result:</h3>
+            <p><strong>{{output1}}</strong></p>
+            <p>{{output2}}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
