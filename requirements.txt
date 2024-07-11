@@ -17,7 +17,7 @@ fonttools==4.53.1
 idna==3.4
 imbalanced-learn==0.12.3
 ipykernel==6.29.5
-ipython==8.26.0
+ipython>=8.0,<9.0
 itsdangerous==2.1.2
 jedi==0.19.1
 Jinja2==3.1.2
