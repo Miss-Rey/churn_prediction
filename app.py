@@ -160,10 +160,7 @@ def train_model():
 
         best_model_pipeline = Pipeline(steps=[
             ('preprocessor', preprocessor),
-            ('classifier', best_classifier)])
-
-        # Fit the combined model before saving
-        combined_model_pipeline.fit(X, y)  
+            ('classifier', best_classifier)])      
         
         joblib.dump(best_model_pipeline, best_model_path)
         print(f"Best model saved successfully. Type: {type(best_model_pipeline)}")
@@ -172,6 +169,10 @@ def train_model():
         combined_model_pipeline = Pipeline(steps=[
             ('preprocessor', preprocessor),
             ('classifier', BaggingClassifier(base_estimator=best_classifier, n_estimators=100, random_state=42))])
+
+        # Fit the combined model before saving
+        combined_model_pipeline.fit(X, y)  
+        
         joblib.dump(combined_model_pipeline, combined_model_path)
         print(f"Combined model saved successfully. Type: {type(combined_model_pipeline)}")
 
