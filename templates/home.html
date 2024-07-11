@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Churn Prediction</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             background-color: #f0f0f0;
@@ -26,97 +27,91 @@
         .btn-primary {
             margin-top: 20px;
         }
-        .output {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #e9ecef;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="text-center">Customer Churn Prediction</h1>
-        <form action="/" method="POST">
+        <form action="/predict" method="POST" id="prediction-form">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="query1">Senior Citizen:</label>
-                        <input type="text" class="form-control" id="query1" name="query1" value="{{query1}}">
+                        <label for="tenure">Tenure:</label>
+                        <input type="text" class="form-control" id="tenure" name="tenure" value="{{tenure}}">
                     </div>
                     <div class="form-group">
-                        <label for="query2">Monthly Charges:</label>
-                        <input type="text" class="form-control" id="query2" name="query2" value="{{query2}}">
+                        <label for="MonthlyCharges">Monthly Charges:</label>
+                        <input type="text" class="form-control" id="MonthlyCharges" name="MonthlyCharges" value="{{MonthlyCharges}}">
                     </div>
                     <div class="form-group">
-                        <label for="query3">Total Charges:</label>
-                        <input type="text" class="form-control" id="query3" name="query3" value="{{query3}}">
+                        <label for="TotalCharges">Total Charges:</label>
+                        <input type="text" class="form-control" id="TotalCharges" name="TotalCharges" value="{{TotalCharges}}">
                     </div>
                     <div class="form-group">
-                        <label for="query4">Gender:</label>
-                        <input type="text" class="form-control" id="query4" name="query4" value="{{query4}}">
+                        <label for="gender">Gender:</label>
+                        <input type="text" class="form-control" id="gender" name="gender" value="{{gender}}">
                     </div>
                     <div class="form-group">
-                        <label for="query5">Partner:</label>
-                        <input type="text" class="form-control" id="query5" name="query5" value="{{query5}}">
+                        <label for="Partner">Partner:</label>
+                        <input type="text" class="form-control" id="Partner" name="Partner" value="{{Partner}}">
                     </div>
                     <div class="form-group">
-                        <label for="query6">Dependents:</label>
-                        <input type="text" class="form-control" id="query6" name="query6" value="{{query6}}">
+                        <label for="Dependents">Dependents:</label>
+                        <input type="text" class="form-control" id="Dependents" name="Dependents" value="{{Dependents}}">
                     </div>
                     <div class="form-group">
-                        <label for="query7">Phone Service:</label>
-                        <input type="text" class="form-control" id="query7" name="query7" value="{{query7}}">
+                        <label for="PhoneService">Phone Service:</label>
+                        <input type="text" class="form-control" id="PhoneService" name="PhoneService" value="{{PhoneService}}">
                     </div>
                     <div class="form-group">
-                        <label for="query8">Multiple Lines:</label>
-                        <input type="text" class="form-control" id="query8" name="query8" value="{{query8}}">
+                        <label for="MultipleLines">Multiple Lines:</label>
+                        <input type="text" class="form-control" id="MultipleLines" name="MultipleLines" value="{{MultipleLines}}">
                     </div>
                     <div class="form-group">
-                        <label for="query9">Internet Service:</label>
-                        <input type="text" class="form-control" id="query9" name="query9" value="{{query9}}">
+                        <label for="InternetService">Internet Service:</label>
+                        <input type="text" class="form-control" id="InternetService" name="InternetService" value="{{InternetService}}">
                     </div>
                     <div class="form-group">
-                        <label for="query10">Online Security:</label>
-                        <input type="text" class="form-control" id="query10" name="query10" value="{{query10}}">
+                        <label for="OnlineSecurity">Online Security:</label>
+                        <input type="text" class="form-control" id="OnlineSecurity" name="OnlineSecurity" value="{{OnlineSecurity}}">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="query11">Online Backup:</label>
-                        <input type="text" class="form-control" id="query11" name="query11" value="{{query11}}">
+                        <label for="OnlineBackup">Online Backup:</label>
+                        <input type="text" class="form-control" id="OnlineBackup" name="OnlineBackup" value="{{OnlineBackup}}">
                     </div>
                     <div class="form-group">
-                        <label for="query12">Device Protection:</label>
-                        <input type="text" class="form-control" id="query12" name="query12" value="{{query12}}">
+                        <label for="DeviceProtection">Device Protection:</label>
+                        <input type="text" class="form-control" id="DeviceProtection" name="DeviceProtection" value="{{DeviceProtection}}">
                     </div>
                     <div class="form-group">
-                        <label for="query13">Tech Support:</label>
-                        <input type="text" class="form-control" id="query13" name="query13" value="{{query13}}">
+                        <label for="TechSupport">Tech Support:</label>
+                        <input type="text" class="form-control" id="TechSupport" name="TechSupport" value="{{TechSupport}}">
                     </div>
                     <div class="form-group">
-                        <label for="query14">Streaming TV:</label>
-                        <input type="text" class="form-control" id="query14" name="query14" value="{{query14}}">
+                        <label for="StreamingTV">Streaming TV:</label>
+                        <input type="text" class="form-control" id="StreamingTV" name="StreamingTV" value="{{StreamingTV}}">
                     </div>
                     <div class="form-group">
-                        <label for="query15">Streaming Movies:</label>
-                        <input type="text" class="form-control" id="query15" name="query15" value="{{query15}}">
+                        <label for="StreamingMovies">Streaming Movies:</label>
+                        <input type="text" class="form-control" id="StreamingMovies" name="StreamingMovies" value="{{StreamingMovies}}">
                     </div>
                     <div class="form-group">
-                        <label for="query16">Contract:</label>
-                        <input type="text" class="form-control" id="query16" name="query16" value="{{query16}}">
+                        <label for="Contract">Contract:</label>
+                        <input type="text" class="form-control" id="Contract" name="Contract" value="{{Contract}}">
                     </div>
                     <div class="form-group">
-                        <label for="query17">Paperless Billing:</label>
-                        <input type="text" class="form-control" id="query17" name="query17" value="{{query17}}">
+                        <label for="PaperlessBilling">Paperless Billing:</label>
+                        <input type="text" class="form-control" id="PaperlessBilling" name="PaperlessBilling" value="{{PaperlessBilling}}">
                     </div>
                     <div class="form-group">
-                        <label for="query18">Payment Method:</label>
-                        <input type="text" class="form-control" id="query18" name="query18" value="{{query18}}">
+                        <label for="PaymentMethod">Payment Method:</label>
+                        <input type="text" class="form-control" id="PaymentMethod" name="PaymentMethod" value="{{PaymentMethod}}">
                     </div>
                     <div class="form-group">
-                        <label for="query19">Tenure:</label>
-                        <input type="text" class="form-control" id="query19" name="query19" value="{{query19}}">
+                        <label for="SeniorCitizen">Senior Citizen:</label>
+                        <input type="text" class="form-control" id="SeniorCitizen" name="SeniorCitizen" value="{{SeniorCitizen}}">
                     </div>
                     <div class="form-group">
                         <label for="model_choice">Choose Model:</label>
@@ -130,17 +125,101 @@
             <button type="submit" class="btn btn-primary btn-block">Predict Churn</button>
         </form>
         
-        {% if output1 %}
-        <div class="output">
-            <h4>Prediction Result:</h4>
-            <p>{{output1}}</p>
-            <p>{{output2}}</p>
+        <button id="train-model" class="btn btn-secondary mt-3 btn-block">Train Model</button>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultModalLabel">Prediction Result</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>Churn Prediction: <span id="prediction-result"></span></h4>
+                    <p>Probability of churn: <span id="churn-probability"></span></p>
+                    <p id="prediction-message"></p>
+                    <h5>Top Contributing Features:</h5>
+                    <canvas id="featureChart"></canvas>
+                </div>
+            </div>
         </div>
-        {% endif %}
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function resetForm() {
+                $('#prediction-form')[0].reset();
+            }
+    
+            $('#resultModal').on('hidden.bs.modal', function () {
+                resetForm();
+            });
+    
+            $('#prediction-form').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/predict',
+                    type: 'post',
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        if (data.error) {
+                            alert(data.error);
+                        } else {
+                            displayResult(data);
+                        }
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            });
+    
+            $('#train-model').click(function() {
+                $.post('/train', function(response) {
+                    alert(response.message);
+                });
+            });
+    
+            function displayResult(data) {
+                $('#prediction-result').text(data.prediction);
+                $('#churn-probability').text((data.probability * 100).toFixed(2) + '%');
+                $('#prediction-message').text(data.message);
+    
+                // Create feature importance chart
+                const ctx = document.getElementById('featureChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(data.feature_importance),
+                        datasets: [{
+                            label: 'Feature Importance',
+                            data: Object.values(data.feature_importance),
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+    
+                // Show the modal
+                $('#resultModal').modal('show');
+            }
+        });
+    </script>
 </body>
 </html>
