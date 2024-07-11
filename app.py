@@ -161,6 +161,10 @@ def train_model():
         best_model_pipeline = Pipeline(steps=[
             ('preprocessor', preprocessor),
             ('classifier', best_classifier)])
+
+        # Fit the combined model before saving
+        combined_model_pipeline.fit(X, y)  
+        
         joblib.dump(best_model_pipeline, best_model_path)
         print(f"Best model saved successfully. Type: {type(best_model_pipeline)}")
 
