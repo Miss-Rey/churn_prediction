@@ -101,7 +101,8 @@ Customer-Churn-Prediction/
 ## Usage
 
 You can also access the hosted version of the application at:
-[[customerchurningprediction.azurewebsites.net](customerchurningprediction.azurewebsites.net)](customerchurnprediction.azurewebsites.net/)
+
+[Customer Churning Prediction](https://customerchurningprediction.azurewebsites.net)
 
 ## Exploratory Data Analysis (EDA)
 
